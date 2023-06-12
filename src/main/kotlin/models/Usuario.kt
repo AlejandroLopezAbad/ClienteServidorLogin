@@ -9,10 +9,7 @@ data class Usuario(
     val password:String,
     val role : String,
 
-) {
-}
-
-
+)
 
 
 @Serializable
@@ -20,3 +17,4 @@ data class Login(
     val username: String,
     val password: String
 )
+

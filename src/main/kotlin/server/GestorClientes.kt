@@ -39,9 +39,12 @@ class GestorClientes(val socket: Socket, tokensecret: String, tokenExpiration: L
             if (usuario.role != "admin") {
                 sendErrorResponse(salida, "ERROR :No tienes permisos de admin")
             } else {
+                println("AAQUIIIIIIIIIIIIIIIII")
+                println(tokenSecret)
                 val numOk = recieveNumRequest(entrada, usuario, tokenSecret)
                 //DEVOLVEMOS UN BOOLEAN para comprobar si el
                 // token esta bien y si esta bien mandamos la peticion del numero
+                //todo ARREGLAR ESTO
                 if (!numOk) {
                     sendErrorResponse(salida, "Error: Token no valido")
 
@@ -53,6 +56,9 @@ class GestorClientes(val socket: Socket, tokensecret: String, tokenExpiration: L
             }
 
         }
+        salida.close()
+        entrada.close()
+        socket.close()
 
 
     }
