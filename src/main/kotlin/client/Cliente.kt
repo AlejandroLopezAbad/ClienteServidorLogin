@@ -77,7 +77,7 @@ private fun readNumResponse(entrada: DataInputStream):String{
 
     when(response.type){
         Response.Type.NUMERO->{
-            println("Recibido el numero multiplicado del servidor")
+            println("Recibido el numero multiplicado del servidor : ${response.content}")
             return response.content!!
         }
         Response.Type.ERROR -> {

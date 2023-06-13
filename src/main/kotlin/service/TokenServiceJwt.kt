@@ -16,7 +16,7 @@ object TokenService {
             //.withSubject("Programacion de Servicios y Procesos") // Para que lo emite *
             .withClaim("usuarioid", user.id) // Datos que queremos guardar * (al menos algunos)
             .withClaim("username", user.username) // Datos que queremos guardar
-            .withClaim("rol", user.role) // Datos que queremos guardar
+            .withClaim("role", user.role) // Datos que queremos guardar
             .withIssuedAt(Date()) // Fecha de emision *
             .withExpiresAt(Date(System.currentTimeMillis() + tokenExpiration)) // Fecha de expiracion *
             .sign(algorithm) // Firmamos el token
@@ -31,10 +31,10 @@ object TokenService {
             val decodedJWT = verifier.verify(token)
            println("Token verificado" )
             // Comprobamos que el token es del usuario
-           decodedJWT.issuer == "TECOCLASS" &&                     //TODO PREGUNTAR SI ESTO SERIA ASI
-            decodedJWT.getClaim("userid").asInt() == user.id &&
+                   //TODO PREGUNTAR SI ESTO SERIA ASI
+            decodedJWT.getClaim("usuarioid").asInt() == user.id &&
                     decodedJWT.getClaim("username").asString() == user.username &&
-                    decodedJWT.getClaim("rol").asString() == user.role
+                    decodedJWT.getClaim("role").asString() == user.role
 
 
         } catch (e: Exception) {

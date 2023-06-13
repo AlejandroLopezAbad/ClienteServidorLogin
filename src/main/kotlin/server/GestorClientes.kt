@@ -39,9 +39,8 @@ class GestorClientes(val socket: Socket, tokensecret: String, tokenExpiration: L
             if (usuario.role != "admin") {
                 sendErrorResponse(salida, "ERROR :No tienes permisos de admin")
             } else {
-                println("AAQUIIIIIIIIIIIIIIIII")
-                println(tokenSecret)
-                val numOk = recieveNumRequest(entrada, usuario, tokenSecret)
+                val content = entrada.readUTF()
+                val numOk = recieveNumRequest(content, usuario, tokenSecret)
                 //DEVOLVEMOS UN BOOLEAN para comprobar si el
                 // token esta bien y si esta bien mandamos la peticion del numero
                 //todo ARREGLAR ESTO
@@ -49,7 +48,7 @@ class GestorClientes(val socket: Socket, tokensecret: String, tokenExpiration: L
                     sendErrorResponse(salida, "Error: Token no valido")
 
                 } else {
-                    sendNumResponse(entrada, salida)
+                    sendNumResponse(content, salida)
 
                 }
 
@@ -63,9 +62,9 @@ class GestorClientes(val socket: Socket, tokensecret: String, tokenExpiration: L
 
     }
 
-    fun sendNumResponse(entrada: DataInputStream, salida: DataOutputStream) {
-        val numRequest = entrada.readUTF()
-        val requestNum = json.decodeFromString<Request<String>>(numRequest)
+    fun sendNumResponse(entrada: String, salida: DataOutputStream) {
+
+        val requestNum = json.decodeFromString<Request<String>>(entrada)
 
         val num = requestNum.contenido?.toInt()
 
@@ -79,9 +78,9 @@ class GestorClientes(val socket: Socket, tokensecret: String, tokenExpiration: L
     }
 
 
-    fun recieveNumRequest(entrada: DataInputStream, usuario: Usuario, tokensecret: String): Boolean {
-        val jsonRequest = entrada.readUTF()
-        val requestNum = json.decodeFromString<Request<String>>(jsonRequest)
+    fun recieveNumRequest(entrada: String, usuario: Usuario, tokensecret: String): Boolean {
+
+        val requestNum = json.decodeFromString<Request<String>>(entrada)
 
         val token = requestNum.token!!
         return TokenService.verifyToken(token, tokenSecret, usuario)
